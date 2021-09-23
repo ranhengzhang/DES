@@ -53,11 +53,7 @@ void BITDES1::iterate(bool flag) {
 } // 16次迭代
 
 uint32_t BITDES1::F(uint32_t Ri, uint64_t Ki) {
-    uint64_t temp = E(Ri);
-
-    temp ^= Ki;
-
-    return P(S(temp));
+    return P(S(E(Ri) ^ Ki));
 } // 轮函数F
 
 uint64_t BITDES1::E(uint32_t Ri) {
