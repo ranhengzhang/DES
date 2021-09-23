@@ -1,4 +1,4 @@
-#pragma oce
+#pragma once
 
 #include "cstdint"
 
@@ -6,7 +6,7 @@
 #define R(n) half[n]
 #define L(n) half[n + 1]
 
-class __attribute__((unused)) BITDES {
+class __attribute__((unused)) BITDES1 {
 private:
     uint64_t mkey[17]{};
     uint64_t mword;
@@ -103,8 +103,8 @@ private:
     void finalPermutation(); // 逆置换
 
 public:
-    explicit BITDES(uint64_t word = 0, uint64_t key = 0); // 构造函数
-    ~BITDES(); // 析构函数
+    explicit BITDES1(uint64_t word = 0, uint64_t key = 0); // 构造函数
+    ~BITDES1(); // 析构函数
     __attribute__((unused)) uint64_t encode(); // 一步加密
     __attribute__((unused)) uint64_t decode(); // 一步解密
     __attribute__((unused)) uint64_t getResult() const; // 获取运算结果
