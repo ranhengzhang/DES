@@ -1,13 +1,13 @@
-#include "BITDES.hpp"
+#include "BITDES1.hpp"
 
-BITDES::BITDES(uint64_t word, uint64_t key) : mword(word) {
+BITDES1::BITDES1(uint64_t word, uint64_t key) : mword(word) {
     mkey[0] = key;
     makeKey();
 } // 构造函数
 
-BITDES::~BITDES() = default; // 析构函数
+BITDES1::~BITDES1() = default; // 析构函数
 
-__attribute__((unused)) uint64_t BITDES::encode() {
+__attribute__((unused)) uint64_t BITDES1::encode() {
     initialPermutation();
     iterate(true);
     finalPermutation();
@@ -15,7 +15,7 @@ __attribute__((unused)) uint64_t BITDES::encode() {
     return getResult();
 } // 一步加密
 
-__attribute__((unused)) uint64_t BITDES::decode() {
+__attribute__((unused)) uint64_t BITDES1::decode() {
     initialPermutation();
     iterate(false);
     finalPermutation();
@@ -23,7 +23,7 @@ __attribute__((unused)) uint64_t BITDES::decode() {
     return getResult();
 } // 一步解密
 
-void BITDES::initialPermutation() {
+void BITDES1::initialPermutation() {
     uint64_t temp = 0;
 
     for (uint8_t i : initial) {
@@ -33,7 +33,7 @@ void BITDES::initialPermutation() {
     mword = temp;
 } // 初始IP置换
 
-void BITDES::finalPermutation() {
+void BITDES1::finalPermutation() {
     uint64_t temp = 0;
 
     temp = ((uint64_t)R(16) << 32) | L(16);
@@ -43,7 +43,7 @@ void BITDES::finalPermutation() {
     }
 } // 逆置换
 
-void BITDES::iterate(bool flag) {
+void BITDES1::iterate(bool flag) {
     R(0) = mword & 0xFFFFFFFF;
     L(0) = mword >> 32;
     for (int i = 0; i < 16; ++i) {
@@ -52,7 +52,7 @@ void BITDES::iterate(bool flag) {
     }
 } // 16次迭代
 
-uint32_t BITDES::F(uint32_t Ri, uint64_t Ki) {
+uint32_t BITDES1::F(uint32_t Ri, uint64_t Ki) {
     uint64_t temp = E(Ri);
 
     temp ^= Ki;
@@ -60,7 +60,7 @@ uint32_t BITDES::F(uint32_t Ri, uint64_t Ki) {
     return P(S(temp));
 } // 轮函数F
 
-uint64_t BITDES::E(uint32_t Ri) {
+uint64_t BITDES1::E(uint32_t Ri) {
     uint64_t temp = 0;
 
     for (uint8_t i : EBox) {
@@ -71,7 +71,7 @@ uint64_t BITDES::E(uint32_t Ri) {
     return temp;
 } // E扩展运算
 
-uint32_t BITDES::S(uint64_t Ri) {
+uint32_t BITDES1::S(uint64_t Ri) {
     uint32_t temp1 = 0;
     uint8_t temp2[8]{};
 
@@ -90,7 +90,7 @@ uint32_t BITDES::S(uint64_t Ri) {
     return temp1;
 } // S盒压缩
 
-uint32_t BITDES::P(uint32_t Ri) {
+uint32_t BITDES1::P(uint32_t Ri) {
     uint32_t temp = 0;
 
     for (uint8_t i : PBox) {
@@ -101,7 +101,7 @@ uint32_t BITDES::P(uint32_t Ri) {
     return temp;
 } // P盒压缩
 
-void BITDES::makeKey() {
+void BITDES1::makeKey() {
     uint64_t temp = 0;
     uint32_t C = 0, D = 0;
 
@@ -122,6 +122,6 @@ void BITDES::makeKey() {
     }
 } // 密钥生成
 
-__attribute__((unused)) uint64_t BITDES::getResult() const {
+__attribute__((unused)) uint64_t BITDES1::getResult() const {
     return mword;
 } // 获取运算结果
